@@ -1,0 +1,9 @@
+admin1,abcd,admin,Parker               
+admin2,abcd,admin,Watson
+admin3,admin123,admin,Mary
+tech1,techman,technician,Kai Cenat
+tech2,alan,technician,Gorlock
+tech3,gyatt,technician,Adin Ross
+tech3,iamfired,Technician,Neon
+Mogger,Mogger,technician,mogger
+melmelmel,melmelmelmel,admin,Melmel
