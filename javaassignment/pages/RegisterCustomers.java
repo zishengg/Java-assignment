@@ -1,20 +1,23 @@
-
 package javaassignment.pages;
+
 import java.io.BufferedReader;
-import java.io.FileReader;
 import java.io.BufferedWriter;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import javax.swing.JOptionPane;
-        
+
 public class RegisterCustomers extends javax.swing.JFrame {
+    private final String adminUser;
 
     /**
-     * Creates new form RegisterCustomers
+
      */
-    public RegisterCustomers() {
+    public RegisterCustomers(String adminUser) {
+        this.adminUser = adminUser;
         initComponents();
     }
+
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -143,35 +146,31 @@ public class RegisterCustomers extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void registerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_registerActionPerformed
-   String name = nameinput.getText().trim();
+    String name = nameinput.getText().trim();
     String tpNumber = tpnumberinput.getText().trim();
     String room = roominput.getText().trim();
 
-    // Validate input fields
     if (name.isEmpty() || tpNumber.isEmpty() || room.isEmpty()) {
         JOptionPane.showMessageDialog(this, "Please fill in all fields", "Error", JOptionPane.ERROR_MESSAGE);
         return;
     }
 
-    // Check if TP number or room already exists
     if (tpOrRoomExists(tpNumber, room)) {
         JOptionPane.showMessageDialog(this, "TP number or room already exists", "Error", JOptionPane.ERROR_MESSAGE);
         return;
     }
 
-    // Write customer information to the file
     try (BufferedWriter writer = new BufferedWriter(new FileWriter("C:\\Users\\sheng\\Desktop\\APU\\SEM 5\\JP\\JavaAssignment\\src\\javaassignment\\customers.txt", true))) {
         writer.write(name + "," + tpNumber + "," + room);
         writer.newLine();
         JOptionPane.showMessageDialog(this, "Customer registered successfully", "Success", JOptionPane.INFORMATION_MESSAGE);
-        AdminPage adminPage = new AdminPage();
+        AdminPage adminPage = new AdminPage(adminUser);
         adminPage.setVisible(true);
         dispose(); 
     } catch (IOException ex) {
-        ex.printStackTrace();
         JOptionPane.showMessageDialog(this, "Error registering customer", "Error", JOptionPane.ERROR_MESSAGE);
     }
-}
+  }
 
 private boolean tpOrRoomExists(String tpNumber, String room) {
     try (BufferedReader reader = new BufferedReader(new FileReader("C:\\Users\\sheng\\Desktop\\APU\\SEM 5\\JP\\JavaAssignment\\src\\javaassignment\\customers.txt"))) {
@@ -181,20 +180,19 @@ private boolean tpOrRoomExists(String tpNumber, String room) {
             if (parts.length == 3) { // Ensure there are three parts: name, TP number, and room
                 String existingTpNumber = parts[1].trim();
                 String existingRoom = parts[2].trim();
-                // Check if TP number or room already exists
                 if (existingTpNumber.equals(tpNumber) || existingRoom.equals(room)) {
                     return true;
                 }
             }
         }
     } catch (IOException ex) {
-        ex.printStackTrace();
+        JOptionPane.showMessageDialog(this, "An error occured while reading the file", "Error", JOptionPane.ERROR_MESSAGE);
     }
     return false;
     }//GEN-LAST:event_registerActionPerformed
 
     private void exitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exitActionPerformed
-        AdminPage backpage = new AdminPage();
+       AdminPage backpage = new AdminPage(adminUser);
         backpage.setVisible(true);
         dispose();
     }//GEN-LAST:event_exitActionPerformed
@@ -238,7 +236,7 @@ private boolean tpOrRoomExists(String tpNumber, String room) {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new RegisterCustomers().setVisible(true);
+                new RegisterCustomers("admin").setVisible(true);
             }
         });
     }

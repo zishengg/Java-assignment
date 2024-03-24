@@ -1,4 +1,3 @@
-
 package javaassignment.pages;
 
 import java.io.BufferedReader;
@@ -9,10 +8,13 @@ import java.util.logging.Logger;
 
 public class AdminFeedback extends javax.swing.JFrame {
     String table[][] = new String [100][];
-    public AdminFeedback()throws IOException  {
-       FileReader fr = new FileReader("C:\\Users\\sheng\\Desktop\\APU\\SEM 5\\JP\\JavaAssignment\\src\\javaassignment\\feedback.txt");
-       BufferedReader br = new BufferedReader(fr);
-       
+    private final String adminUser; 
+
+    public AdminFeedback(String adminUser) throws IOException  {
+        this.adminUser = adminUser; 
+        FileReader fr = new FileReader("C:\\Users\\sheng\\Desktop\\APU\\SEM 5\\JP\\JavaAssignment\\src\\javaassignment\\feedback.txt");
+        BufferedReader br = new BufferedReader(fr);
+
         String line;
         int count = 0;
         while ((line=br.readLine()) != null){
@@ -20,7 +22,7 @@ public class AdminFeedback extends javax.swing.JFrame {
             table[count] = values;
             count++;
         }
-        
+
         br.close();
         fr.close();
         initComponents();
@@ -110,21 +112,18 @@ public class AdminFeedback extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void exitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exitActionPerformed
-     AdminPage backpage = new AdminPage();
-        backpage.setVisible(true);
-        dispose();
+    AdminPage backpage = new AdminPage(adminUser); 
+    backpage.setVisible(true);
+    dispose();
     }//GEN-LAST:event_exitActionPerformed
 
     private void addfeedbackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addfeedbackActionPerformed
-     AddFeedback gopage = new AddFeedback();
+     AddFeedback gopage = new AddFeedback(adminUser);
      gopage.setVisible(true);
      dispose();
     }//GEN-LAST:event_addfeedbackActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
+     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
@@ -146,13 +145,12 @@ public class AdminFeedback extends javax.swing.JFrame {
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(AdminFeedback.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
-        //</editor-fold>
+        //</editor-fold>    
 
-        /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 try {
-                    new AdminFeedback().setVisible(true);
+                    new AdminFeedback("admin").setVisible(true);
                 } catch (IOException ex) {
                     Logger.getLogger(AdminFeedback.class.getName()).log(Level.SEVERE, null, ex);
                 }

@@ -1,4 +1,3 @@
-
 package javaassignment.pages;
 
 import java.io.BufferedReader;
@@ -7,13 +6,15 @@ import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-
 public class AdminPayment extends javax.swing.JFrame {
-    String table[][] = new String [100][];
+    String table[][] = new String[100][];
     
-    public AdminPayment()throws IOException  {
-       FileReader fr = new FileReader("C:\\Users\\sheng\\Desktop\\APU\\SEM 5\\JP\\JavaAssignment\\src\\javaassignment\\payment.txt");
-       BufferedReader br = new BufferedReader(fr);
+    private final String adminUser;
+
+    public AdminPayment(String adminUser) throws IOException {
+        this.adminUser = adminUser;
+        FileReader fr = new FileReader("C:\\Users\\sheng\\Desktop\\APU\\SEM 5\\JP\\JavaAssignment\\src\\javaassignment\\payment.txt");
+        BufferedReader br = new BufferedReader(fr);
        
         String line;
         int count = 0;
@@ -27,8 +28,6 @@ public class AdminPayment extends javax.swing.JFrame {
         fr.close();
         initComponents();
     }
-
-
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -127,26 +126,25 @@ public class AdminPayment extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void addpaymentActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addpaymentActionPerformed
-     AddPayment addpayment = new AddPayment();
-     addpayment.setVisible(true);
-     dispose();
+AddPayment addPayment = new AddPayment(adminUser);
+  
+    addPayment.setVisible(true);
+
+    this.dispose();
     }//GEN-LAST:event_addpaymentActionPerformed
 
     private void exitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exitActionPerformed
-     AdminPage backpage = new AdminPage();
+     AdminPage backpage = new AdminPage(adminUser);
         backpage.setVisible(true);
         dispose();
     }//GEN-LAST:event_exitActionPerformed
 
     private void changestatusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_changestatusActionPerformed
-      changeStatus gopage = new changeStatus();
+      changeStatus gopage = new changeStatus(adminUser);
       gopage.setVisible(true);
       dispose();
     }//GEN-LAST:event_changestatusActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -171,16 +169,15 @@ public class AdminPayment extends javax.swing.JFrame {
         }
         //</editor-fold>
 
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                try {
-                    new AdminPayment().setVisible(true);
-                } catch (IOException ex) {
-                    Logger.getLogger(AdminPayment.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
-        });
+    java.awt.EventQueue.invokeLater(new Runnable() {
+    public void run() {
+        try {
+            new AdminPayment("admin").setVisible(true);
+        } catch (IOException ex) {
+            Logger.getLogger(AdminPayment.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

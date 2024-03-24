@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
 package javaassignment.pages;
 
 import java.io.BufferedReader;
@@ -43,7 +39,6 @@ public TechPayment() throws IOException {
         jTable2 = new javax.swing.JTable();
         jLabel2 = new javax.swing.JLabel();
         addpayment = new javax.swing.JButton();
-        changestatus = new javax.swing.JButton();
         exit = new javax.swing.JButton();
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
@@ -83,14 +78,6 @@ public TechPayment() throws IOException {
             }
         });
 
-        changestatus.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        changestatus.setText("CHANGE STATUS");
-        changestatus.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                changestatusActionPerformed(evt);
-            }
-        });
-
         exit.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         exit.setText("EXIT");
         exit.addActionListener(new java.awt.event.ActionListener() {
@@ -118,8 +105,6 @@ public TechPayment() throws IOException {
                 .addGap(41, 41, 41)
                 .addComponent(exit, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(changestatus, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(32, 32, 32)
                 .addComponent(addpayment, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(29, 29, 29))
         );
@@ -134,7 +119,6 @@ public TechPayment() throws IOException {
                 .addGap(33, 33, 33)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(addpayment, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(changestatus, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(exit, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(21, Short.MAX_VALUE))
         );
@@ -147,10 +131,6 @@ public TechPayment() throws IOException {
         gopage.setVisible(true);
         dispose();
     }//GEN-LAST:event_addpaymentActionPerformed
-
-    private void changestatusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_changestatusActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_changestatusActionPerformed
 
     private void exitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exitActionPerformed
       TechPage backpage = new TechPage();
@@ -183,7 +163,6 @@ public TechPayment() throws IOException {
         }
         //</editor-fold>
 
-        /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 try {
@@ -197,7 +176,6 @@ public TechPayment() throws IOException {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton addpayment;
-    private javax.swing.JButton changestatus;
     private javax.swing.JButton exit;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;

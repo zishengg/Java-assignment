@@ -1,5 +1,5 @@
-
 package javaassignment.pages;
+
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -13,15 +13,12 @@ import javax.swing.JOptionPane;
 
 
 public class AddFeedback extends javax.swing.JFrame {
+    private final String adminUser; 
 
-    /**
-     * Creates new form AddFeedback
-     */
-    public AddFeedback() {
+    public AddFeedback(String adminUser) {
+        this.adminUser = adminUser; 
         initComponents();
     }
-
-
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -157,30 +154,27 @@ public class AddFeedback extends javax.swing.JFrame {
     }//GEN-LAST:event_nameinputActionPerformed
 
     private void exitbuttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exitbuttonActionPerformed
-      AdminFeedback backpage = null;
+      AdminFeedback backpage = null; 
         try {
-            backpage = new AdminFeedback();
+            backpage = new AdminFeedback(adminUser);
         } catch (IOException ex) {
             Logger.getLogger(AddFeedback.class.getName()).log(Level.SEVERE, null, ex);
         }
-     backpage.setVisible(true);
-     dispose();
+        backpage.setVisible(true);
+        dispose();
     }//GEN-LAST:event_exitbuttonActionPerformed
 
     private void addActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addActionPerformed
    String name = nameinput.getText().trim();
     String room = roominput.getText().trim();
     String feedback = feedbackinput.getText().trim();
-    String date = dateinput.getText().trim(); // Get the entered date
+    String date = dateinput.getText().trim(); 
 
-    // Check if any of the fields are empty
     if (name.isEmpty() || room.isEmpty() || feedback.isEmpty() || date.isEmpty()) {
-        // Display an error message if any field is empty
         JOptionPane.showMessageDialog(this, "Please fill in all fields.", "Error", JOptionPane.ERROR_MESSAGE);
         return;
     }
-
-    // Read payment.txt to find the user and check payment status
+    //Check payment status
     try (BufferedReader br = new BufferedReader(new FileReader("C:\\Users\\sheng\\Desktop\\APU\\SEM 5\\JP\\JavaAssignment\\src\\javaassignment\\payment.txt"))) {
         String line;
         boolean userFound = false;
@@ -191,9 +185,8 @@ public class AddFeedback extends javax.swing.JFrame {
                 userFound = true;
                 paymentStatus = parts[5].trim(); // Get payment status
 
-                // Check if the status is "Paid"
                 if (paymentStatus.equalsIgnoreCase("Paid")) {
-                    // Check if the same feedback exists
+                    // Check if the same feedback exists    
                     boolean feedbackExists = false;
                     try (BufferedReader feedbackReader = new BufferedReader(new FileReader("C:\\Users\\sheng\\Desktop\\APU\\SEM 5\\JP\\JavaAssignment\\src\\javaassignment\\feedback.txt"))) {
                         String feedbackLine;
@@ -205,12 +198,10 @@ public class AddFeedback extends javax.swing.JFrame {
                             }
                         }
                     } catch (IOException ex) {
-                        // Handle file reading error
-                        ex.printStackTrace();
+                        JOptionPane.showMessageDialog(this, "An error occurred while reading the file", "Error", JOptionPane.ERROR_MESSAGE);
                     }
 
                     if (feedbackExists) {
-                        // Feedback already exists for the same name, room, and date
                         JOptionPane.showMessageDialog(this, "Feedback already given for the same name, room, and date.", "Error", JOptionPane.ERROR_MESSAGE);
                         return;
                     }
@@ -220,35 +211,27 @@ public class AddFeedback extends javax.swing.JFrame {
                         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
                         String currentDate = sdf.format(new Date());
                         pw.println(name + "," + room + "," + currentDate + "," + feedback);
-                        
-                        // Successfully added feedback, display confirmation message
+
                         JOptionPane.showMessageDialog(this, "Successfully added feedback.", "Success", JOptionPane.INFORMATION_MESSAGE);
                         
-                        // Return to AdminFeedback page
-                        AdminFeedback backpage = new AdminFeedback();
+                        AdminFeedback backpage = new AdminFeedback(adminUser);
                         backpage.setVisible(true);
                         dispose();
                     } catch (IOException ex) {
-                        // Handle file writing error
-                        ex.printStackTrace();
+                        System.out.println("An error occurred while adding feedback ");
                     }
                 } else {
-                    // Payment status is not "Paid"
                     JOptionPane.showMessageDialog(this, "User payment is pending", "Error", JOptionPane.ERROR_MESSAGE);
-                    return; // Return from the method to stop further execution
+                    return; 
                 }
                 break;
             }
         }
-
         if (!userFound) {
-            // User not found in payment records for the entered date
-            // Display an error message
             JOptionPane.showMessageDialog(this, "User not found in payment records for the entered date.", "Error", JOptionPane.ERROR_MESSAGE);
         }
     } catch (IOException ex) {
-        // Handle file reading error
-        ex.printStackTrace();
+      JOptionPane.showMessageDialog(this, "An error occured while reading the file", "Error", JOptionPane.ERROR_MESSAGE);
     }
     }//GEN-LAST:event_addActionPerformed
 
@@ -256,10 +239,7 @@ public class AddFeedback extends javax.swing.JFrame {
        
     }//GEN-LAST:event_dateinputActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
+     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
@@ -283,10 +263,9 @@ public class AddFeedback extends javax.swing.JFrame {
         }
         //</editor-fold>
 
-        /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new AddFeedback().setVisible(true);
+                new AddFeedback("admin").setVisible(true);
             }
         });
     }

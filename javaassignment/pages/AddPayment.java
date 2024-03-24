@@ -1,8 +1,5 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
 package javaassignment.pages;
+
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -17,9 +14,13 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 public class AddPayment extends javax.swing.JFrame {
 
-    public AddPayment() {
+    private final String adminUser;
+
+    public AddPayment(String adminUser) {
+        this.adminUser = adminUser;
         initComponents();
     }
 
@@ -185,20 +186,19 @@ public class AddPayment extends javax.swing.JFrame {
     }//GEN-LAST:event_nameinputActionPerformed
 
     private void addActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addActionPerformed
-  String name = nameinput.getText().trim();
+    String name = nameinput.getText().trim();
     String room = roominput.getText().trim();
     String date = dateinput.getText().trim();
     String amount = amountinput.getText().trim();
     String status = statusinput.getText().trim();
-    String technician = ""; // Initialize technician name
+    String technician = ""; 
     
-    // Check if appointment exists in AdminAppointment.txt
     boolean appointmentExists = false;
     try (Scanner scanner = new Scanner(new File("C:\\Users\\sheng\\Desktop\\APU\\SEM 5\\JP\\JavaAssignment\\src\\javaassignment\\AdminAppointment.txt"))) {
         while (scanner.hasNextLine()) {
             String line = scanner.nextLine();
             String[] parts = line.split(",");
-            // Check if the appointment matches the input
+
             if (parts[0].equals(name) && parts[1].equals(room) && parts[2].equals(date)) {
                 appointmentExists = true;
                 // Check if technician is in format "HH:MM" (e.g., "10:10")
@@ -210,26 +210,24 @@ public class AddPayment extends javax.swing.JFrame {
                 break;
             }
         }
-    } catch (FileNotFoundException e) {
-        e.printStackTrace();
+    } catch (FileNotFoundException ex) {
+        JOptionPane.showMessageDialog(this, "An error occured while reading the file", "Error", JOptionPane.ERROR_MESSAGE);
     }
 
     if (appointmentExists) {
         try (FileWriter fw = new FileWriter("C:\\Users\\sheng\\Desktop\\APU\\SEM 5\\JP\\JavaAssignment\\src\\javaassignment\\payment.txt", true);
              BufferedWriter bw = new BufferedWriter(fw);
              PrintWriter out = new PrintWriter(bw)) {
-            // Append payment details to payment.txt
             if (!Files.exists(Paths.get("C:\\Users\\sheng\\Desktop\\APU\\SEM 5\\JP\\JavaAssignment\\src\\javaassignment\\payment.txt"))) {
-                // Write the header if the file doesn't exist
                 out.println("Name, Room, Date, Technician, Amount, Status");
             }
             out.println(name + "," + room + "," + date + "," + technician + "," + amount + "," + status);
             out.flush(); // Ensure the data is written immediately
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (IOException ex) {
+           JOptionPane.showMessageDialog(this, "An error occured while reading the file", "Error", JOptionPane.ERROR_MESSAGE);
         }
 
-        // Remove the corresponding entry from AdminAppointment.txt
+
         try {
             File inputFile = new File("C:\\Users\\sheng\\Desktop\\APU\\SEM 5\\JP\\JavaAssignment\\src\\javaassignment\\AdminAppointment.txt");
             File tempFile = new File("C:\\Users\\sheng\\Desktop\\APU\\SEM 5\\JP\\JavaAssignment\\src\\javaassignment\\temp.txt");
@@ -257,22 +255,20 @@ public class AddPayment extends javax.swing.JFrame {
             if (!tempFile.renameTo(inputFile)) {
                 System.out.println("Failed to update AdminAppointment.txt");
             }
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (IOException ex) {
+            JOptionPane.showMessageDialog(this, "An error occured while reading the file", "Error", JOptionPane.ERROR_MESSAGE);
         }
 
-        // Notify user of successful payment addition
         JOptionPane.showMessageDialog(this, "Payment added successfully!");
         AdminPayment backpage = null;
       try {
-          backpage = new AdminPayment();
+          backpage = new AdminPayment(adminUser);
       } catch (IOException ex) {
           Logger.getLogger(AddPayment.class.getName()).log(Level.SEVERE, null, ex);
       }
         backpage.setVisible(true);
         dispose();
     } else {
-        // Notify user of appointment not found
         JOptionPane.showMessageDialog(this, "Appointment doesn't exist!", "Error", JOptionPane.ERROR_MESSAGE);
     }
     }//GEN-LAST:event_addActionPerformed
@@ -296,7 +292,7 @@ public class AddPayment extends javax.swing.JFrame {
     private void backadminActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backadminActionPerformed
       AdminPayment backpage = null;
         try {
-            backpage = new AdminPayment();
+            backpage = new AdminPayment(adminUser);
         } catch (IOException ex) {
             Logger.getLogger(AddPayment.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -307,7 +303,7 @@ public class AddPayment extends javax.swing.JFrame {
     /**
      * @param args the command line arguments
      */
-    public static void main(String args[]) {
+   public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
@@ -331,10 +327,9 @@ public class AddPayment extends javax.swing.JFrame {
         }
         //</editor-fold>
 
-        /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new AddPayment().setVisible(true);
+                new AddPayment("admin").setVisible(true);
             }
         });
     }

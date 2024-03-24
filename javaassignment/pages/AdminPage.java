@@ -12,9 +12,10 @@ public class AdminPage extends javax.swing.JFrame {
     public AdminPage() {
         initComponents();
     }
-     public AdminPage(String adminUser) {
+
+    public AdminPage(String adminUser) {
         initComponents();
-        this.adminUser = adminUser; // Assign the provided adminUser to the instance variable
+        this.adminUser = adminUser; 
     }
 
     @SuppressWarnings("unchecked")
@@ -154,7 +155,7 @@ public class AdminPage extends javax.swing.JFrame {
     private void appointmentsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_appointmentsActionPerformed
      AdminAppointmentPage jumppage = null;
         try {
-            jumppage = new AdminAppointmentPage();
+            jumppage = new AdminAppointmentPage(adminUser);
         } catch (IOException ex) {
             Logger.getLogger(AdminPage.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -164,19 +165,19 @@ public class AdminPage extends javax.swing.JFrame {
 
     private void paymentsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_paymentsActionPerformed
      AdminPayment pay = null;
-        try {
-            pay = new AdminPayment();
-        } catch (IOException ex) {
-            Logger.getLogger(AdminPage.class.getName()).log(Level.SEVERE, null, ex);
-        }
-     pay.setVisible(true);
-     dispose();
+    try {
+        pay = new AdminPayment(adminUser);
+    } catch (IOException ex) {
+        Logger.getLogger(AdminPage.class.getName()).log(Level.SEVERE, null, ex);
+    }
+    pay.setVisible(true);
+    dispose();
     }//GEN-LAST:event_paymentsActionPerformed
 
     private void feedbacksActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_feedbacksActionPerformed
      AdminFeedback feetpage = null;
         try {
-            feetpage = new AdminFeedback();
+            feetpage = new AdminFeedback(adminUser);
         } catch (IOException ex) {
             Logger.getLogger(AdminPage.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -185,57 +186,56 @@ public class AdminPage extends javax.swing.JFrame {
     }//GEN-LAST:event_feedbacksActionPerformed
 
     private void registeruserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_registeruserActionPerformed
-      // Check if the logged-in user is "admin1"
     if (adminUser != null && adminUser.equals("admin1")) {
-        RegisterUsers usersreg = new RegisterUsers();
+        RegisterUsers usersreg = new RegisterUsers(adminUser);
         usersreg.setVisible(true);
         dispose(); 
     } else {
-        // Display a message or perform another action to notify the user that they don't have permission
         JOptionPane.showMessageDialog(this, "You do not have permission to access this functionality.", "Error", JOptionPane.ERROR_MESSAGE);
     }
     }//GEN-LAST:event_registeruserActionPerformed
 
     private void registercustomerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_registercustomerActionPerformed
-        RegisterCustomers cusreg = new RegisterCustomers();
+        RegisterCustomers cusreg = new RegisterCustomers(adminUser);
         cusreg.setVisible(true);
         dispose(); 
     }//GEN-LAST:event_registercustomerActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(AdminPage.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(AdminPage.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(AdminPage.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(AdminPage.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
 
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new AdminPage().setVisible(true);
+public static void main(String args[]) {    
+    //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
+    /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
+     * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+     */
+    try {
+        for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+            if ("Nimbus".equals(info.getName())) {
+                javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                break;
             }
-        });
+        }
+    } catch (ClassNotFoundException ex) {
+        java.util.logging.Logger.getLogger(AdminPage.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+    } catch (InstantiationException ex) {
+        java.util.logging.Logger.getLogger(AdminPage.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+    } catch (IllegalAccessException ex) {
+        java.util.logging.Logger.getLogger(AdminPage.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+    } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+        java.util.logging.Logger.getLogger(AdminPage.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
     }
+    //</editor-fold>
+
+    java.awt.EventQueue.invokeLater(new Runnable() {
+        public void run() {
+            if (args.length > 0) {
+                String adminUser = args[0];
+                new AdminPage(adminUser).setVisible(true);
+            } else {
+                System.err.println("No arguments provided. Please provide the admin username as an argument.");
+            }
+        }
+    });
+}
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton appointments;

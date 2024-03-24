@@ -1,4 +1,3 @@
-
 package javaassignment.pages;
 
 import java.io.BufferedReader;
@@ -10,7 +9,6 @@ public class LoginPage extends javax.swing.JFrame {
     public LoginPage() {
         initComponents();
     }
-
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -95,22 +93,17 @@ public class LoginPage extends javax.swing.JFrame {
     private void loginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginActionPerformed
         String username = usernameinput.getText().trim();
         String password = passwordinput.getText().trim();
-
-        // Initialize userType
         String userType = "";
-
         try (BufferedReader br = new BufferedReader(new FileReader("C:\\Users\\sheng\\Desktop\\APU\\SEM 5\\JP\\JavaAssignment\\src\\javaassignment\\users.txt"))) {
             String line;
-            boolean loggedIn = false; // Flag to check if login was successful
+            boolean loggedIn = false; 
             while ((line = br.readLine()) != null) {
                 String[] parts = line.split(",");
-                if (parts.length == 4) { // Ensure there are four parts: username, password, userType, and name
+                if (parts.length == 4) {
                     String storedUsername = parts[0].trim();
                     String storedPassword = parts[1].trim();
                     userType = parts[2].trim();
-
                     if (username.equals(storedUsername) && password.equals(storedPassword)) {
-                        // Login successful
                         loggedIn = true;
                         break;
                     }
@@ -118,7 +111,7 @@ public class LoginPage extends javax.swing.JFrame {
             }
             if (loggedIn) {
                 if (userType.equalsIgnoreCase("admin") || userType.equalsIgnoreCase("technician")) {
-                    // Redirecting to admin or technician page
+
                     if (userType.equals("admin")) {
                         String adminUser = username;    
                         AdminPage adminPage = new AdminPage(adminUser);
@@ -136,8 +129,7 @@ public class LoginPage extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(this, "Wrong username or password", "Login Error", JOptionPane.ERROR_MESSAGE);
             }
         } catch (IOException ex) {
-            ex.printStackTrace();
-            JOptionPane.showMessageDialog(this, "An error occurred while reading user information.", "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "An error occurred while reading user information: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_loginActionPerformed
 
@@ -145,10 +137,6 @@ public class LoginPage extends javax.swing.JFrame {
        
     }//GEN-LAST:event_passwordinputActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
-    
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -173,7 +161,6 @@ public class LoginPage extends javax.swing.JFrame {
         }
         //</editor-fold>
 
-        /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new LoginPage().setVisible(true);

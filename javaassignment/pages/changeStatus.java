@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
 package javaassignment.pages;
 
 import java.io.BufferedReader;
@@ -15,10 +11,12 @@ import javax.swing.JOptionPane;
 
 public class changeStatus extends javax.swing.JFrame {
 
-    public changeStatus() {
+    private final String adminUser;
+
+    public changeStatus(String adminUser) {
+        this.adminUser = adminUser;
         initComponents();
     }
-
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -141,63 +139,77 @@ public class changeStatus extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void confirmActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_confirmActionPerformed
-   String name = nameinput.getText().trim();
-        String room = roominput.getText().trim();
-        String date = dateinput.getText().trim();
-        boolean matchFound = false;
+         String name = nameinput.getText().trim();
+    String room = roominput.getText().trim();
+    String date = dateinput.getText().trim();
+    boolean matchFound = false;
 
-        try (BufferedReader reader = new BufferedReader(new FileReader("C:\\Users\\sheng\\Desktop\\APU\\SEM 5\\JP\\JavaAssignment\\src\\javaassignment\\payment.txt"))) {
-            StringBuilder sb = new StringBuilder();
-            String line;
-            boolean paymentUpdated = false;
+    try (BufferedReader reader = new BufferedReader(new FileReader("C:\\Users\\sheng\\Desktop\\APU\\SEM 5\\JP\\JavaAssignment\\src\\javaassignment\\payment.txt"))) {
+        StringBuilder sb = new StringBuilder();
+        String line;
+        boolean paymentUpdated = false;
 
-            while ((line = reader.readLine()) != null) {
-                String[] parts = line.split(",");
+        while ((line = reader.readLine()) != null) {
+            String[] parts = line.split(",");
 
-                String recordName = parts[0].trim();
-                String recordDate = parts[2].trim();
-                String recordRoom = parts[1].trim();
-                String status = parts[5].trim();
+            String recordName = parts[0].trim();
+            String recordDate = "";
+            if (parts.length > 2) {
+                recordDate = parts[2].trim();
+            } else {
+                System.err.println("Invalid data format: " + line);
+                continue; 
+            }
+            String recordRoom = parts[1].trim();
+            String status = parts[5].trim();
 
-                System.out.println("Input: Name=" + name + ", Room=" + room + ", Date=" + date);
-                System.out.println("Parts: Name=" + recordName + ", Room=" + recordRoom + ", Date=" + recordDate + ", Status=" + status);
+            // Debugging print statements to check values
+            System.out.println("Input: Name=" + name + ", Room=" + room + ", Date=" + date);
+            System.out.println("Parts: Name=" + recordName + ", Room=" + recordRoom + ", Date=" + recordDate + ", Status=" + status);
 
-                if (recordName.equalsIgnoreCase(name) && recordDate.equals(date) && recordRoom.equalsIgnoreCase(room)) {
-                    matchFound = true;
-                    if (status.equals("Pending")) {
-                        parts[5] = "Paid";
-                        paymentUpdated = true;
-                        JOptionPane.showMessageDialog(this, "Payment status updated successfully!");
-                    } else {
-                        JOptionPane.showMessageDialog(this, "Payment is already Paid.", "Error", JOptionPane.ERROR_MESSAGE);
-                    }
+            // Check if the record matches the input data
+            if (recordName.equalsIgnoreCase(name) && recordDate.equals(date) && recordRoom.equalsIgnoreCase(room)) {
+                matchFound = true;
+                // Check if the payment is pending
+                if (status.equals("Pending")) {
+                    // Update status to Paid
+                    parts[5] = "Paid";
+                    paymentUpdated = true;
+                    JOptionPane.showMessageDialog(this, "Payment status updated successfully!");
+                } else {
+                    // Inform the user if payment is already paid
+                    JOptionPane.showMessageDialog(this, "Payment is already Paid.", "Error", JOptionPane.ERROR_MESSAGE);
                 }
-                sb.append(String.join(",", parts)).append("\n");
             }
-
-            if (!matchFound) {
-                JOptionPane.showMessageDialog(this, "Wrong details entered.", "Error", JOptionPane.ERROR_MESSAGE);
-            }
-
-            if (paymentUpdated) {
-                try (PrintWriter writer = new PrintWriter(new FileWriter("C:\\Users\\sheng\\Desktop\\APU\\SEM 5\\JP\\JavaAssignment\\src\\javaassignment\\payment.txt"))) {
-                    writer.write(sb.toString());
-                }
-                AdminPayment backpage = new AdminPayment();
-                backpage.setVisible(true);
-                dispose();
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-            JOptionPane.showMessageDialog(this, "An error occurred while updating payment status.", "Error", JOptionPane.ERROR_MESSAGE);
+            // Append the modified or unmodified line to the StringBuilder
+            sb.append(String.join(",", parts)).append("\n");
         }
+        // If no matching record is found, show an error message
+        if (!matchFound) {
+            JOptionPane.showMessageDialog(this, "No matching payment found.", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+        // If payment is updated, write the changes to the file
+        if (paymentUpdated) {
+            try (PrintWriter writer = new PrintWriter(new FileWriter("C:\\Users\\sheng\\Desktop\\APU\\SEM 5\\JP\\JavaAssignment\\src\\javaassignment\\payment.txt"))) {
+                writer.write(sb.toString());
+            }
+            // Close the current window and open the admin payment window
+            AdminPayment backpage = new AdminPayment(adminUser);
+            backpage.setVisible(true);
+            dispose();
+        }
+    } catch (IOException ex) {
+        // Handle any I/O exceptions
+        JOptionPane.showMessageDialog(this, "An error occurred while reading or writing the file.", "Error", JOptionPane.ERROR_MESSAGE);
+      
+    }
     }//GEN-LAST:event_confirmActionPerformed
 
     
     private void exitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exitActionPerformed
-    AdminPayment backpage = null;
+   AdminPayment backpage = null;
         try {
-            backpage = new AdminPayment();
+            backpage = new AdminPayment(adminUser);
         } catch (IOException ex) {
             java.util.logging.Logger.getLogger(changeStatus.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
@@ -217,14 +229,11 @@ public class changeStatus extends javax.swing.JFrame {
        
     }//GEN-LAST:event_roominputActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
+   public static void main(String args[]) {
+ 
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html
          */
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
@@ -244,10 +253,9 @@ public class changeStatus extends javax.swing.JFrame {
         }
         //</editor-fold>
 
-        /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new changeStatus().setVisible(true);
+                new changeStatus("admin").setVisible(true);
             }
         });
     }

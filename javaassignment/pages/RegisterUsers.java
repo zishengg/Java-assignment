@@ -1,5 +1,5 @@
-
 package javaassignment.pages;
+
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -7,8 +7,10 @@ import javax.swing.JOptionPane;
 
 public class RegisterUsers extends javax.swing.JFrame {
 
+    private final String adminUser;
 
-    public RegisterUsers() {
+    public RegisterUsers(String adminUser) {
+        this.adminUser = adminUser;
         initComponents();
     }
 
@@ -70,7 +72,7 @@ public class RegisterUsers extends javax.swing.JFrame {
         jLabel5.setText("REGISTER USER");
 
         register.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        register.setText("RESGISTER");
+        register.setText("REGISTER");
         register.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 registerActionPerformed(evt);
@@ -179,19 +181,16 @@ public class RegisterUsers extends javax.swing.JFrame {
     String password = passwordinput.getText().trim();
     String role = roleinput.getText().trim();
 
-    // Validate input fields
     if (name.isEmpty() || username.isEmpty() || password.isEmpty() || role.isEmpty()) {
         JOptionPane.showMessageDialog(this, "Please fill in all fields", "Error", JOptionPane.ERROR_MESSAGE);
         return;
     }
 
-    // Validate role input
     if (!role.equalsIgnoreCase("admin") && !role.equalsIgnoreCase("technician")) {
         JOptionPane.showMessageDialog(this, "Role must be either 'admin' or 'technician'", "Error", JOptionPane.ERROR_MESSAGE);
         return;
     }
 
-    // Write user information to the file
     try (BufferedWriter writer = new BufferedWriter(new FileWriter("C:\\Users\\sheng\\Desktop\\APU\\SEM 5\\JP\\JavaAssignment\\src\\javaassignment\\users.txt", true))) {
         writer.write(username + "," + password + "," + role + "," + name);
         writer.newLine();
@@ -201,18 +200,18 @@ public class RegisterUsers extends javax.swing.JFrame {
         adminPage.setVisible(true);
         dispose(); 
     } catch (IOException ex) {
-        ex.printStackTrace();
+        JOptionPane.showMessageDialog(this, "An error occured while reading the file", "Error", JOptionPane.ERROR_MESSAGE);
         JOptionPane.showMessageDialog(this, "Error registering user", "Error", JOptionPane.ERROR_MESSAGE);
     }
     }//GEN-LAST:event_registerActionPerformed
 
     private void exitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exitActionPerformed
-     AdminPage backpage = new AdminPage();
+     AdminPage backpage = new AdminPage(adminUser);
         backpage.setVisible(true);
         dispose();
     }//GEN-LAST:event_exitActionPerformed
 
-    public static void main(String args[]) {
+   public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
@@ -236,10 +235,9 @@ public class RegisterUsers extends javax.swing.JFrame {
         }
         //</editor-fold>
 
-        /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new RegisterUsers().setVisible(true);
+                new RegisterUsers("admin").setVisible(true);
             }
         });
     }

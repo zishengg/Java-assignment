@@ -1,4 +1,3 @@
-
 package javaassignment.pages;
 
 import java.io.BufferedReader;
@@ -11,12 +10,12 @@ import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 public class BookAppointment extends javax.swing.JFrame {
+    private final String adminUser;
 
-    public BookAppointment() {
+    public BookAppointment(String adminUser) {
+        this.adminUser = adminUser;
         initComponents();
     }
-
-   
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -188,11 +187,11 @@ public class BookAppointment extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
+    
     private void exitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exitActionPerformed
      AdminAppointmentPage backpage = null;
         try {
-            backpage = new AdminAppointmentPage();
+            backpage = new AdminAppointmentPage(adminUser);
         } catch (IOException ex) {
             Logger.getLogger(BookAppointment.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -201,7 +200,7 @@ public class BookAppointment extends javax.swing.JFrame {
     }//GEN-LAST:event_exitActionPerformed
 
     private void bookActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bookActionPerformed
-   String name = nameinput.getText().trim();
+    String name = nameinput.getText().trim();
     String room = roominput.getText().trim();
     String tpNumber = tpnumberinput.getText().trim();
     String date = dateinput.getText().trim();
@@ -212,7 +211,7 @@ public class BookAppointment extends javax.swing.JFrame {
     if (!isCustomerRegistered(name, tpNumber, room)) {
         JOptionPane.showMessageDialog(this, "Customer is not registered.", "Error", JOptionPane.ERROR_MESSAGE);
         return;
-    }
+    }   
 
     // Check if the technician exists
     if (!isTechnicianExists(technician)) {
@@ -221,23 +220,21 @@ public class BookAppointment extends javax.swing.JFrame {
     }
 
     // Check for appointment conflicts
-    if (isAppointmentConflict(room, date, time)) {
-        JOptionPane.showMessageDialog(this, "Appointment conflict. Please choose a different time or room.", "Error", JOptionPane.ERROR_MESSAGE);
+    if (isAppointmentConflict(room, date, time)) {  
+        JOptionPane.showMessageDialog(this, "Appointment conflict. Please choose a different time.", "Error", JOptionPane.ERROR_MESSAGE);
         return;
     }
 
     // Add the new appointment
     try (BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter("C:\\Users\\sheng\\Desktop\\APU\\SEM 5\\JP\\JavaAssignment\\src\\javaassignment\\AdminAppointment.txt", true))) {
-        // Write the new appointment
         bufferedWriter.write(name + "," + room + "," + date + "," + time + "," + technician);
-        // Append a newline character
         bufferedWriter.newLine();
         JOptionPane.showMessageDialog(this, "Appointment booked successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
-        AdminAppointmentPage goback = new AdminAppointmentPage();
+        AdminAppointmentPage goback = new AdminAppointmentPage(adminUser);
         goback.setVisible(true);
         dispose();
-    } catch (IOException e) {
-        e.printStackTrace();
+    } catch (IOException ex) {
+        JOptionPane.showMessageDialog(this, "An error occured while reading the file", "Error", JOptionPane.ERROR_MESSAGE);
     }
 }                                    
 
@@ -258,8 +255,8 @@ private boolean isCustomerRegistered(String name, String tpNumber, String room) 
                 System.err.println("Malformed customer information: " + line);
             }
         }
-    } catch (IOException e) {
-        e.printStackTrace();
+    } catch (IOException ex) {
+        JOptionPane.showMessageDialog(this, "An error occured while reading the file", "Error", JOptionPane.ERROR_MESSAGE);
     }
     return false;
 }
@@ -269,7 +266,7 @@ private boolean isTechnicianExists(String technician) {
         String line;
         while ((line = bufferedReader.readLine()) != null) {
             String[] parts = line.split(",");
-            if (parts.length >= 4) {
+            if (parts.length >= 4) {                                                        
                 String userType = parts[2];
                 String technicianName = parts[3];
                 if (technicianName.equals(technician) && userType.equals("technician")) {
@@ -280,8 +277,8 @@ private boolean isTechnicianExists(String technician) {
                 System.err.println("Malformed user information: " + line);
             }
         }
-    } catch (IOException e) {
-        e.printStackTrace();
+    } catch (IOException ex) {
+        JOptionPane.showMessageDialog(this, "An error occured while reading the file", "Error", JOptionPane.ERROR_MESSAGE);
     }
     return false;
 }
@@ -303,8 +300,8 @@ private boolean isAppointmentConflict(String room, String date, String time) {
                 System.err.println("Malformed appointment information: " + line);
             }
         }
-    } catch (IOException e) {
-        e.printStackTrace();
+    } catch (IOException ex) {
+        JOptionPane.showMessageDialog(this, "An error occured while reading the file", "Error", JOptionPane.ERROR_MESSAGE);
     }
     return false;
     }//GEN-LAST:event_bookActionPerformed
@@ -361,9 +358,9 @@ private boolean isAppointmentConflict(String room, String date, String time) {
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
+      java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new BookAppointment().setVisible(true);
+                new BookAppointment("admin").setVisible(true);
             }
         });
     }
